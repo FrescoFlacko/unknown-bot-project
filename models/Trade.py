@@ -1,6 +1,6 @@
 from datetime import datetime
 
-def Trade:
+class Trade:
     def __init__(self, ticker, entryPrice, exitPrice, profit, confidence, entryDate):
         self.ticker = ticker
         self.entryPrice = entryPrice
