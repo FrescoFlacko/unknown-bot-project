@@ -3,14 +3,16 @@ from time import sleep
 import threading
 
 def active_trade_watcher():
-    btc_trade = Watcher('btc', 33340, 33000, 35000, 0.55)
-    
+    btc_trade = Watcher('btc', 33340, 33000, 35000, 0.55, True)
+
     coinsList = retrieveCryptoList()
     idList = ','.join(buildIdList(['xrp', 'btc', 'ltc'], coinsList))
     counter = 0
     while counter < 10:
         prices = retrievePrices(idList)
-        print(prices)
+        btc_price = prices[btc_trade.symbol]['usd']
+
+        
 
         counter += 1
         sleep(30)
