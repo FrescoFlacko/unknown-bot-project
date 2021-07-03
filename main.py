@@ -3,7 +3,7 @@ from time import sleep
 import threading
 
 def active_trade_watcher():
-    btc_trade = Watcher('btc', 33340, 33000, 35000, 0.55, True)
+    btc_trade = Watcher('btc', 33630, 33600, 33650, 0.55, True)
 
     coinsList = retrieveCryptoList()
     idList = ','.join(buildIdList(['xrp', 'btc', 'ltc'], coinsList))
@@ -12,7 +12,14 @@ def active_trade_watcher():
         prices = retrievePrices(idList)
         btc_price = prices[btc_trade.symbol]['usd']
 
-        
+        if (btc_trade.didPricePassStopLoss(btc_price) == True):
+            print("Stop loss hit")
+            counter = 10
+            break
+        elif (btc_trade.didPricePassTakeProfit(btc_price) == True):
+            print("Take profit hit")
+            counter = 10
+            break
 
         counter += 1
         sleep(30)
