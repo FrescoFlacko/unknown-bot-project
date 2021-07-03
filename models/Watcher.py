@@ -11,7 +11,7 @@ class Watcher:
         self.confidence = confidence
         self.isLong = isLong
     
-    def didPricePassStopLoss(price):
+    def didPricePassStopLoss(self, price):
         if (self.isLong and price <= self.stopLoss):
             return True
         elif (not self.isLong and price >= self.stopLoss):
@@ -19,7 +19,7 @@ class Watcher:
         else:
             return False
     
-    def didPricePassTakeProfit(price):
+    def didPricePassTakeProfit(self, price):
         if (self.isLong and price >= self.takeProfit):
             return True
         elif (not self.isLong and price <= self.takeProfit):
