@@ -10,6 +10,7 @@ class Watcher:
         self.entryPrice = entryPrice
         self.confidence = confidence
         self.isLong = isLong
+        self._id = ''
     
     def didPricePassStopLoss(self, price):
         if (self.isLong and price <= self.stopLoss):

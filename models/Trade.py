@@ -9,3 +9,4 @@ class Trade:
         self.confidence = confidence
         self.entryDate = entryDate
         self.exitDate = datetime.now()
+        self._id = ''
