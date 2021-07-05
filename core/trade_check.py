@@ -1,4 +1,4 @@
-from util.mongo import *
+from util import mongo
 
 def closeTrade(watcher, price):
     '''
@@ -6,10 +6,13 @@ def closeTrade(watcher, price):
         with results.
     '''
     profit = (price - watcher.entryPrice) / abs(watcher.entryPrice)
-    result = Trade(watcher.ticker, watcher.entryPrice, price, profit, watcher.confidence, watcher.creationDate)
+    result = Trade(watcher.ticker, watcher.entryPrice, price, profit, 
+                    watcher.confidence, watcher.creationDate, watcher.isLong)
     
-    response = removeDocument('watcher', watcher)
+    response = mongo.removeDocument('watcher', watcher)
     # Handle error situations here
 
-    response = insertDocument('results', result)
+    response = mongo.insertDocument('results', result)
     # Handle error situations here
+
+    return response
