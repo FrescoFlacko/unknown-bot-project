@@ -12,6 +12,7 @@ def active_trade_watcher():
     coinsList = retrieveCryptoList()
     idList = ','.join(buildIdList(['xrp', 'btc', 'eth'], coinsList))
     counter = 0
+    print(buildIdList(['xrp', 'btc', 'eth'], coinsList))
     while counter < 10:
         prices = retrievePrices(idList)
 
@@ -21,13 +22,11 @@ def active_trade_watcher():
 
             if (trade.didPricePassStopLoss(price) == True):
                 print("Stop loss hit")
-                trades[:] = [x for x in trades if x != trade]
+                # trades[:] = [x for x in trades if x != trade]
                 # Convert Watcher to Result trade and upload it to the server
             elif (trade.didPricePassTakeProfit(price) == True):
                 print("Take profit hit")
-                trades[:] = [x for x in trades if x != trade]
-
-        print(prices)
+                # trades[:] = [x for x in trades if x != trade]
         
         counter += 1
         sleep(5)

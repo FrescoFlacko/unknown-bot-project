@@ -6,7 +6,8 @@ def initializeMongoDBService():
         sets a global database object to be used in project.
     '''
     mongo_client = pymongo.MongoClient('mongodb://127.0.0.1:27017/')
-    global trades_db = mongo_client['trades']
+    global trades_db 
+    trades_db = mongo_client['trades']
 
 def retrieveAllFromCollection(collection):
     '''
@@ -62,8 +63,8 @@ def getCollectionObject(collection_name):
         CRUD instructions.
     '''
     if (trades_db == None):
-    print('ERROR: Mongo service has not been initialized.')
-    return
+        print('ERROR: Mongo service has not been initialized.')
+        return
     
     mongo_collection = trades_db[collection]
     if (mongo_collection == None):
