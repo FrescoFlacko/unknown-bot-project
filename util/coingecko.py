@@ -34,5 +34,5 @@ def buildIdList(symbols, coinList):
         Convert list of symbols into CoinGecko ID's to be used for API calls.
         Returns list of ID's.
     '''
-    idList = [coinList[symbol] for symbol in symbols if hasattr(coinList, symbol)]
+    idList = [coinList[symbol] for symbol in symbols]
     return idList
