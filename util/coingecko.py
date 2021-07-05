@@ -7,7 +7,7 @@ def retrieveCryptoList():
     response = requests.get('https://api.coingecko.com/api/v3/coins/list')
 
     if response.status_code != 200:
-        print("Error retrieving list of coins from CoinGecko, ", response.json())
+        print('Error retrieving list of coins from CoinGecko, ', response.json())
         return
     
     coinList = {}
@@ -19,12 +19,12 @@ def retrieveCryptoList():
 
 def retrievePrices(coins):
     response = requests.get(
-        "https://api.coingecko.com/api/v3/simple/price",
-        params={ "ids": coins, "vs_currencies": "usd" }
+        'https://api.coingecko.com/api/v3/simple/price',
+        params={ 'ids': coins, 'vs_currencies': 'usd' }
     )
 
     if response.status_code != 200:
-        print("Error retrieving list of prices for coins from CoinGecko, ", response.json())
+        print('Error retrieving list of prices for coins from CoinGecko, ', response.json())
         return
     
     return response.json()
