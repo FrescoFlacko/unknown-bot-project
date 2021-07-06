@@ -12,8 +12,7 @@ def active_trade_watcher():
 
     coinsList = retrieveCryptoList()
     idList = ','.join(buildIdList(['xrp', 'btc', 'eth'], coinsList))
-    counter = 0
-    while counter < 10:
+    while True:
         prices = retrievePrices(idList)
 
         for trade in trades:
@@ -28,7 +27,6 @@ def active_trade_watcher():
                 print("Take profit hit")
                 trades[:] = [x for x in trades if x != trade]
         
-        counter += 1
         sleep(5)
 
 def discord_listener():
