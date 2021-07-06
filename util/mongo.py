@@ -13,7 +13,7 @@ def retrieveAllFromCollection(collection):
     '''
         Retrieves all the documents from a given collection.
     '''
-    mongo_collection = getCollectionObject()
+    mongo_collection = getCollectionObject(collection)
     if (mongo_collection == None):
         return
     
@@ -24,40 +24,46 @@ def insertDocument(collection, document):
     '''
         Insert a document into the collection.
     '''
-    mongo_collection = getCollectionObject()
+    mongo_collection = getCollectionObject(collection)
     if (mongo_collection == None):
         return
     
-    response = mongo_collection.insert_one(document)
+    # Remove _id field when inserting document so we can use Mongo-generated ID
+    document_dict = document.__dict__
+    del document_dict['_id']
+    
+    response = mongo_collection.insert_one(document_dict)
+    document._id = response.inserted_id
+
     return response
 
 def updateDocument(collection, document):
     '''
         Update the document in the given collection.
     '''
-    mongo_collection = getCollectionObject()
+    mongo_collection = getCollectionObject(collection)
     if (mongo_collection == None):
         return
     
     query = { "_id" : document._id }
 
-    response = mongo_collection.update_one(query, document)
+    response = mongo_collection.update_one(query, document.__dict__)
     return response
 
 def removeDocument(collection, document):
     '''
         Remove the given document from the collection.
     '''
-    mongo_collection = getCollectionObject()
+    mongo_collection = getCollectionObject(collection)
     if (mongo_collection == None):
         return
     
     query = { "_id" : document._id }
 
-    response = mongo_collection.insert_one(document)
+    response = mongo_collection.insert_one(document.__dict__)
     return response
 
-def getCollectionObject(collection_name):
+def getCollectionObject(collection):
     '''
         Create the collection pymongo object to be used when making
         CRUD instructions.
