@@ -1,13 +1,23 @@
-import pymongo
+from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError
 
 def initializeMongoDBService():
     '''
         Initializes the MongoDB client for the project and
         sets a global database object to be used in project.
     '''
-    mongo_client = pymongo.MongoClient('mongodb://127.0.0.1:27017/')
+    mongo_client = MongoClient('mongodb://127.0.0.1:27017/', serverSelectionTimeoutMS=1000)
+
+    try :
+        mongo_client.admin.command('ismaster')
+    except ServerSelectionTimeoutError as error:
+        print('ERROR while trying to initialize MongoDB:', error)
+        return False
+    
     global trades_db 
     trades_db = mongo_client['trades']
+
+    return True
 
 def retrieveAllFromCollection(collection):
     '''

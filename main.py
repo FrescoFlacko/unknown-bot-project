@@ -1,5 +1,6 @@
 from imports import *
 from time import sleep
+from sys import exit
 import threading
 
 def active_trade_watcher():
@@ -41,7 +42,9 @@ if __name__ == "__main__":
     # stock_tickers = ["AAPL", "BB", "FB", "MSFT"]
     # stock_prices = getPricesForTickers(stock_tickers)
     # print(stock_prices)
-    initializeMongoDBService()
+    response = initializeMongoDBService()
+    if (response == False):
+        exit()
     
     # watcher_thread = threading.Thread(target=active_trade_watcher, args=(), daemon=True)
     discord_thread = threading.Thread(target=discord_listener, args=(), daemon=True)
