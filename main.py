@@ -30,6 +30,9 @@ def active_trade_watcher():
         counter += 1
         sleep(5)
 
+def discord_listener():
+    createWatcher('btc', 33600, 33400, 33650, 0.55, True)
+
 if __name__ == "__main__":
     # TODO: Find place to place API key. Preferrably to be entered in command line but for now keep in code
     # api_key = "pk_fc3ff7ca62524c4e9a45b434780efec1"
@@ -38,6 +41,13 @@ if __name__ == "__main__":
     # stock_tickers = ["AAPL", "BB", "FB", "MSFT"]
     # stock_prices = getPricesForTickers(stock_tickers)
     # print(stock_prices)
-    watcher_thread = threading.Thread(target=active_trade_watcher, args=(), daemon=True)
-    watcher_thread.start()
-    watcher_thread.join()
+    initializeMongoDBService()
+    
+    # watcher_thread = threading.Thread(target=active_trade_watcher, args=(), daemon=True)
+    discord_thread = threading.Thread(target=discord_listener, args=(), daemon=True)
+
+    # watcher_thread.start()
+    discord_thread.start()
+
+    # watcher_thread.join()
+    discord_thread.join()
