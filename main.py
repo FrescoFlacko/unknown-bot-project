@@ -3,7 +3,7 @@ from time import sleep
 from sys import exit
 import threading
 
-def active_trade_watcher():
+def active_trade_watcher(mutex, coinsList):
     btc_trade = Watcher('btc', 33600, 33400, 33650, 0.55, True)
     eth_trade = Watcher('eth', 2149.73, 2100, 2160, 0.6, True)
     xrp_trade = Watcher('xrp', 0.653339, 0.653, 0.654, 0.6, True)
@@ -11,7 +11,6 @@ def active_trade_watcher():
     trades = [btc_trade, eth_trade, xrp_trade]
 
     coinsList = retrieveCryptoList()
-    idList = ','.join(buildIdList(['xrp', 'btc', 'eth'], coinsList))
     while True:
         prices = retrievePrices(idList)
 
@@ -29,8 +28,10 @@ def active_trade_watcher():
         
         sleep(5)
 
-def discord_listener():
-    createWatcher('btc', 33600, 33400, 33650, 0.55, True)
+def discord_listener(mutex, coinsList):
+    mutex.acquire()
+    idList = ','.join(buildIdList(['xrp', 'btc', 'eth'], coinsList))
+    mutex.release()
 
 if __name__ == "__main__":
     # TODO: Find place to place API key. Preferrably to be entered in command line but for now keep in code
@@ -44,8 +45,19 @@ if __name__ == "__main__":
     if (response == False):
         exit()
     
-    # watcher_thread = threading.Thread(target=active_trade_watcher, args=(), daemon=True)
-    discord_thread = threading.Thread(target=discord_listener, args=(), daemon=True)
+    mutex = threading.Lock()
+    coinsList = retrieveCryptoList()
+
+    # Trade watcher thread: Read 
+    # Discord watcher thread: Write
+    global idList
+
+    # Trade watcher thread: Read & Write
+    # Discord watcher thread: Write
+    global trades
+
+    # watcher_thread = threading.Thread(target=active_trade_watcher, args=(mutex, coinsList), daemon=True)
+    discord_thread = threading.Thread(target=discord_listener, args=(mutex, coinsList), daemon=True)
 
     # watcher_thread.start()
     discord_thread.start()
